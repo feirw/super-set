@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Petal · The outfit you need, at your door in 30 minutes</title>
+<meta name="description" content="Petal delivers clothes from local stores and neighbours' closets in under 30 minutes. Buy it, rent it, or let our AI stylist build the whole look.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root {
+    --petal-blush: #FFF5F6;
+    --petal-soft: #FADADD;
+    --petal-pink: #F4A6B4;
+    --petal-rose: #D9667F;
+    --petal-deep: #8E2A47;
+    --petal-ink: #3A1420;
+    --petal-leaf: #7A9A7E;
+    --white: #FFFFFF;
+    --shadow-sm: 0 4px 14px rgba(142, 42, 71, 0.08);
+    --shadow-md: 0 14px 40px rgba(142, 42, 71, 0.14);
+    --shadow-lg: 0 30px 70px rgba(142, 42, 71, 0.22);
+    --radius: 20px;
+    --serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    color: var(--petal-ink);
+    background: var(--petal-blush);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 { font-family: var(--serif); color: var(--petal-deep); line-height: 1.15; margin: 0 0 16px; }
+  h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); letter-spacing: -0.01em; }
+  h2 { font-size: clamp(1.9rem, 4vw, 2.8rem); }
+  h3 { font-size: 1.25rem; }
+  p { margin: 0 0 16px; }
+  a { color: var(--petal-rose); text-decoration: none; }
+  em { font-style: italic; color: var(--petal-rose); }
+  section { scroll-margin-top: 84px; }
+  :focus-visible { outline: 3px solid var(--petal-deep); outline-offset: 3px; border-radius: 8px; }
+
+  .container { width: 100%; max-width: 1140px; margin: 0 auto; padding: 0 20px; }
+  .section { padding: 72px 0; }
+  .section-head { max-width: 640px; margin: 0 auto 44px; text-align: center; }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.78rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--petal-rose); background: var(--white);
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .lead { font-size: 1.1rem; color: rgba(58, 20, 32, 0.8); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    font: 600 1rem var(--sans); cursor: pointer;
+    padding: 14px 26px; border-radius: 999px; border: 2px solid transparent;
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--petal-rose); color: var(--white); box-shadow: 0 10px 24px rgba(217, 102, 127, 0.4); }
+  .btn-primary:hover { background: var(--petal-deep); }
+  .btn-outline { background: transparent; color: var(--petal-deep); border-color: var(--petal-pink); }
+  .btn-outline:hover { background: var(--petal-soft); }
+  .btn-light { background: var(--white); color: var(--petal-deep); }
+  .btn-sm { padding: 10px 18px; font-size: 0.92rem; }
+  .btn-block { width: 100%; }
+
+  /* Nav */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255, 245, 246, 0.86);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(244, 166, 180, 0.35);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
+  .logo { display: inline-flex; align-items: center; gap: 8px; font: 700 1.5rem var(--serif); color: var(--petal-deep); }
+  .logo svg { width: 26px; height: 26px; }
+  .nav-links { display: none; gap: 28px; list-style: none; margin: 0; padding: 0; }
+  .nav-links a { color: var(--petal-ink); font-weight: 500; font-size: 0.95rem; }
+  .nav-links a:hover { color: var(--petal-rose); }
+
+  /* Hero */
+  .hero {
+    position: relative; overflow: hidden;
+    padding: 56px 0 72px;
+    background:
+      radial-gradient(900px 480px at 85% 0%, rgba(244, 166, 180, 0.45), transparent 60%),
+      radial-gradient(700px 420px at 0% 100%, rgba(250, 218, 221, 0.9), transparent 60%),
+      var(--petal-blush);
+  }
+  .hero-grid { position: relative; z-index: 1; display: grid; gap: 48px; align-items: center; }
+  .hero-copy .lead { max-width: 520px; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 28px; }
+  .hero-stats { display: flex; flex-wrap: wrap; gap: 28px; padding: 0; margin: 0; list-style: none; }
+  .hero-stats strong { display: block; font: 700 1.6rem var(--serif); color: var(--petal-deep); }
+  .hero-stats span { font-size: 0.88rem; color: rgba(58, 20, 32, 0.7); }
+
+  .petals { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .petals span {
+    position: absolute; top: -40px;
+    width: 18px; height: 24px;
+    background: linear-gradient(135deg, var(--petal-pink), var(--petal-rose));
+    border-radius: 80% 0 80% 0;
+    opacity: 0;
+    animation: fall linear infinite;
+  }
+  @keyframes fall {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.55; }
+    90% { opacity: 0.45; }
+    100% { transform: translate3d(90px, 820px, 0) rotate(420deg); opacity: 0; }
+  }
+
+  /* Phone mockup */
+  .phone-wrap { display: flex; justify-content: center; }
+  .phone {
+    position: relative; width: 290px; max-width: 100%;
+    background: var(--petal-ink); border-radius: 44px; padding: 12px;
+    box-shadow: var(--shadow-lg);
+    transform: rotate(2deg);
+  }
+  .phone::before {
+    content: ''; position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
+    width: 84px; height: 22px; background: var(--petal-ink); border-radius: 999px; z-index: 2;
+  }
+  .screen { background: var(--petal-blush); border-radius: 34px; overflow: hidden; padding: 52px 16px 18px; }
+  .screen-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .screen-top b { font: 700 1.1rem var(--serif); color: var(--petal-deep); }
+  .live { font-size: 0.72rem; font-weight: 700; color: var(--petal-leaf); display: inline-flex; align-items: center; gap: 6px; }
+  .live i { width: 8px; height: 8px; border-radius: 50%; background: var(--petal-leaf); animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: 0.3; transform: scale(0.7); } }
+  .map {
+    position: relative; height: 150px; border-radius: 18px; margin-bottom: 14px;
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.6) 2px, transparent 2px) 0 0 / 46px 46px,
+      linear-gradient(0deg, rgba(255,255,255,.6) 2px, transparent 2px) 0 0 / 46px 46px,
+      linear-gradient(135deg, var(--petal-soft), var(--petal-pink));
+  }
+  .map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .map .pin { position: absolute; font-size: 1.4rem; }
+  .map .pin.store { left: 12px; bottom: 12px; }
+  .map .pin.home { right: 12px; top: 10px; }
+  .map .pin.rider { left: 46%; top: 44%; animation: ride 3s ease-in-out infinite alternate; }
+  @keyframes ride { from { transform: translate(-22px, 14px); } to { transform: translate(22px, -14px); } }
+  .order-card { background: var(--white); border-radius: 18px; padding: 14px; box-shadow: var(--shadow-sm); }
+  .order-row { display: flex; gap: 12px; align-items: center; }
+  .thumb {
+    flex: 0 0 auto; width: 48px; height: 48px; border-radius: 14px;
+    display: grid; place-items: center; font-size: 1.5rem;
+    background: linear-gradient(135deg, var(--petal-soft), var(--petal-pink));
+  }
+  .order-row strong { display: block; font-size: 0.92rem; }
+  .order-row small { color: rgba(58, 20, 32, 0.65); font-size: 0.78rem; }
+  .eta { margin: 12px 0 8px; font-weight: 700; color: var(--petal-deep); font-size: 0.95rem; }
+  .bar { height: 8px; border-radius: 999px; background: var(--petal-soft); overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 62%; border-radius: 999px; background: linear-gradient(90deg, var(--petal-pink), var(--petal-rose)); animation: grow 4s ease-in-out infinite alternate; }
+  @keyframes grow { from { width: 38%; } to { width: 82%; } }
+
+  /* Stylist */
+  .stylist { background: linear-gradient(180deg, var(--petal-blush), var(--petal-soft)); }
+  .stylist-grid { display: grid; gap: 40px; align-items: center; }
+  .benefits { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 14px; }
+  .benefits li { display: flex; gap: 14px; align-items: flex-start; }
+  .benefits .ico {
+    flex: 0 0 auto; width: 42px; height: 42px; border-radius: 14px; background: var(--white);
+    display: grid; place-items: center; font-size: 1.2rem; box-shadow: var(--shadow-sm);
+  }
+  .benefits strong { display: block; color: var(--petal-deep); }
+  .benefits span { font-size: 0.95rem; color: rgba(58, 20, 32, 0.78); }
+
+  .chat { background: var(--white); border-radius: 28px; box-shadow: var(--shadow-md); overflow: hidden; }
+  .chat-head { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--petal-soft); }
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--petal-pink), var(--petal-deep));
+    display: grid; place-items: center; color: var(--white); font-size: 1.1rem;
+  }
+  .chat-head strong { display: block; line-height: 1.2; }
+  .chat-head small { color: var(--petal-leaf); font-weight: 600; font-size: 0.78rem; }
+  .chat-body { padding: 20px; min-height: 430px; display: flex; flex-direction: column; gap: 12px; }
+  .bubble { max-width: 88%; padding: 12px 16px; border-radius: 20px; font-size: 0.95rem; animation: pop .35s ease both; }
+  @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(0.98); } }
+  .bubble.user { align-self: flex-end; background: var(--petal-rose); color: var(--white); border-bottom-right-radius: 6px; }
+  .bubble.bot { align-self: flex-start; background: var(--petal-soft); color: var(--petal-ink); border-bottom-left-radius: 6px; }
+  .typing { display: inline-flex; gap: 5px; padding: 16px 18px; }
+  .typing i { width: 8px; height: 8px; border-radius: 50%; background: var(--petal-rose); animation: blink 1.2s infinite ease-in-out; }
+  .typing i:nth-child(2) { animation-delay: .15s; }
+  .typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: 0.25; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-4px); } }
+
+  .outfit { align-self: stretch; border: 1.5px solid var(--petal-soft); border-radius: 20px; padding: 14px; animation: pop .4s ease both; }
+  .outfit-item { display: flex; align-items: center; gap: 12px; padding: 8px 0; }
+  .outfit-item + .outfit-item { border-top: 1px dashed var(--petal-soft); }
+  .outfit-item .info { flex: 1; min-width: 0; }
+  .outfit-item strong { display: block; font-size: 0.92rem; }
+  .outfit-item small { color: rgba(58, 20, 32, 0.65); font-size: 0.78rem; }
+  .pill { flex: 0 0 auto; font-size: 0.74rem; font-weight: 700; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
+  .pill.rent { background: var(--petal-soft); color: var(--petal-deep); }
+  .pill.buy { background: var(--petal-deep); color: var(--white); }
+  .outfit-total { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 12px 0; padding-top: 12px; border-top: 1.5px solid var(--petal-soft); font-weight: 700; color: var(--petal-deep); font-size: 0.95rem; }
+  .outfit-total span:last-child { color: var(--petal-leaf); }
+  .ordered { background: rgba(122, 154, 126, 0.14); border-radius: 14px; padding: 12px 14px; font-size: 0.9rem; font-weight: 600; color: #4d6b51; }
+  .ordered .bar { margin-top: 10px; background: rgba(122, 154, 126, 0.25); }
+  .ordered .bar i { background: var(--petal-leaf); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; padding: 0 20px 20px; }
+  .chip {
+    font: 600 0.86rem var(--sans); cursor: pointer;
+    background: var(--petal-blush); color: var(--petal-deep);
+    border: 1.5px solid var(--petal-pink); border-radius: 999px; padding: 8px 14px;
+    transition: background .2s, color .2s, transform .2s;
+  }
+  .chip:hover { transform: translateY(-1px); background: var(--petal-soft); }
+  .chip[aria-pressed="true"] { background: var(--petal-deep); border-color: var(--petal-deep); color: var(--white); }
+
+  /* Shop */
+  .toggle { display: inline-flex; background: var(--white); border-radius: 999px; padding: 5px; box-shadow: var(--shadow-sm); margin-top: 8px; }
+  .toggle button {
+    font: 600 0.95rem var(--sans); cursor: pointer; border: 0; background: transparent;
+    color: var(--petal-deep); padding: 10px 24px; border-radius: 999px; transition: background .2s, color .2s;
+  }
+  .toggle button[aria-pressed="true"] { background: var(--petal-rose); color: var(--white); }
+  .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .product { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); transition: transform .25s, box-shadow .25s; }
+  .product:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+  .product-img { position: relative; aspect-ratio: 1 / 1; display: grid; place-items: center; font-size: clamp(3rem, 9vw, 4.6rem); }
+  .product:nth-child(1) .product-img { background: linear-gradient(135deg, #FADADD, #F4A6B4); }
+  .product:nth-child(2) .product-img { background: linear-gradient(135deg, #FFF5F6, #FADADD); }
+  .product:nth-child(3) .product-img { background: linear-gradient(135deg, #F4A6B4, #D9667F); }
+  .product:nth-child(4) .product-img { background: linear-gradient(135deg, #FADADD, #FFF5F6); }
+  .badge { position: absolute; top: 10px; left: 10px; background: var(--white); color: var(--petal-deep); font-size: 0.72rem; font-weight: 700; padding: 5px 10px; border-radius: 999px; }
+  .product-body { padding: 14px 16px 16px; }
+  .product-body strong { display: block; }
+  .product-body small { color: rgba(58, 20, 32, 0.65); }
+  .price { margin-top: 8px; font: 700 1.15rem var(--serif); color: var(--petal-deep); }
+
+  /* Cards / steps */
+  .grid-3 { display: grid; gap: 18px; }
+  .card { background: var(--white); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow-sm); }
+  .card p { margin: 0; color: rgba(58, 20, 32, 0.78); }
+  .step-num {
+    width: 52px; height: 52px; border-radius: 18px; margin-bottom: 18px;
+    display: grid; place-items: center; font-size: 1.5rem;
+    background: linear-gradient(135deg, var(--petal-soft), var(--petal-pink));
+  }
+  .step small { display: block; margin-top: 12px; font-weight: 600; color: var(--petal-rose); }
+
+  /* Closet */
+  .closet { background: var(--petal-soft); }
+  .split { display: grid; gap: 40px; align-items: center; }
+  .earn { background: var(--white); border-radius: 28px; padding: 26px; box-shadow: var(--shadow-md); max-width: 420px; margin: 0 auto; width: 100%; }
+  .earn-top { display: flex; gap: 14px; align-items: center; margin-bottom: 18px; }
+  .earn-top .thumb { width: 64px; height: 64px; font-size: 2rem; border-radius: 18px; }
+  .earn-amount { font: 700 2.6rem var(--serif); color: var(--petal-deep); line-height: 1; }
+  .earn-amount small { font: 500 0.9rem var(--sans); color: var(--petal-leaf); margin-left: 8px; }
+  .bars { display: flex; align-items: flex-end; gap: 8px; height: 90px; margin: 20px 0 10px; }
+  .bars i { flex: 1; border-radius: 8px 8px 3px 3px; background: linear-gradient(180deg, var(--petal-pink), var(--petal-rose)); }
+  .earn-foot { display: flex; justify-content: space-between; font-size: 0.82rem; color: rgba(58, 20, 32, 0.65); }
+  .ticks { list-style: none; padding: 0; margin: 20px 0 28px; display: grid; gap: 10px; }
+  .ticks li { padding-left: 30px; position: relative; }
+  .ticks li::before { content: '✓'; position: absolute; left: 0; top: 1px; width: 20px; height: 20px; border-radius: 50%; background: var(--petal-leaf); color: var(--white); font-size: 0.72rem; font-weight: 700; display: grid; place-items: center; }
+
+  /* Trust */
+  .trust { padding: 36px 0; background: var(--white); border-block: 1px solid var(--petal-soft); }
+  .trust-grid { display: grid; gap: 20px; }
+  .trust-item { display: flex; gap: 14px; align-items: center; }
+  .trust-item .ico { flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; background: var(--petal-blush); display: grid; place-items: center; font-size: 1.3rem; }
+  .trust-item strong { display: block; color: var(--petal-deep); }
+  .trust-item span { font-size: 0.9rem; color: rgba(58, 20, 32, 0.72); }
+
+  /* CTA */
+  .cta { background: linear-gradient(135deg, var(--petal-deep), #B23E60); color: var(--white); text-align: center; position: relative; overflow: hidden; }
+  .cta h2 { color: var(--white); }
+  .cta p { color: rgba(255, 255, 255, 0.86); max-width: 520px; margin: 0 auto 28px; }
+  .waitlist { display: flex; flex-direction: column; gap: 12px; max-width: 480px; margin: 0 auto; }
+  .waitlist input {
+    flex: 1; font: 500 1rem var(--sans); color: var(--petal-ink);
+    padding: 14px 20px; border-radius: 999px; border: 2px solid transparent; background: var(--white); min-width: 0;
+  }
+  .waitlist input:focus-visible { outline-color: var(--petal-pink); }
+  .thanks { font-weight: 600; font-size: 1.1rem; background: rgba(255, 255, 255, 0.14); border-radius: 18px; padding: 16px 20px; max-width: 480px; margin: 0 auto; }
+
+  /* Footer */
+  footer { background: var(--petal-ink); color: rgba(255, 245, 246, 0.75); padding: 40px 0; font-size: 0.9rem; }
+  .foot { display: flex; flex-direction: column; gap: 18px; align-items: center; text-align: center; }
+  footer .logo { color: var(--petal-blush); }
+  .foot-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; list-style: none; margin: 0; padding: 0; }
+  .foot-links a { color: rgba(255, 245, 246, 0.75); }
+  .foot-links a:hover { color: var(--petal-pink); }
+
+  /* Reveal on scroll */
+  .js .reveal { opacity: 0; transform: translateY(26px); transition: opacity .7s ease, transform .7s ease; }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  @media (min-width: 720px) {
+    .section { padding: 100px 0; }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .trust-grid { grid-template-columns: repeat(3, 1fr); }
+    .waitlist { flex-direction: row; }
+    .foot { flex-direction: row; justify-content: space-between; text-align: left; }
+  }
+  @media (min-width: 900px) {
+    .nav-links { display: flex; }
+    .hero { padding: 88px 0 110px; }
+    .hero-grid { grid-template-columns: 1.15fr 0.85fr; }
+    .stylist-grid { grid-template-columns: 0.9fr 1.1fr; gap: 64px; }
+    .split { grid-template-columns: 1fr 1fr; gap: 64px; }
+    .grid-4 { grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .petals { display: none; }
+    .js .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="logo" href="#top" aria-label="Petal home">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2C9 8 6 14 6 19a10 10 0 0 0 20 0c0-5-3-11-10-17z" fill="#D9667F"/><path d="M16 9c-3 4-4.5 7-4.5 10a4.5 4.5 0 0 0 9 0c0-3-1.5-6-4.5-10z" fill="#FADADD"/></svg>
+      Petal
+    </a>
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#stylist">AI stylist</a></li>
+        <li><a href="#shop">Shop</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#closet">Rent your closet</a></li>
+        <li><a href="#stores">For stores</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="#waitlist">Get the app</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="petals" aria-hidden="true">
+      <span style="left:6%;animation-duration:13s;animation-delay:0s"></span>
+      <span style="left:18%;animation-duration:17s;animation-delay:3s;width:12px;height:16px"></span>
+      <span style="left:31%;animation-duration:15s;animation-delay:7s"></span>
+      <span style="left:47%;animation-duration:19s;animation-delay:1s;width:14px;height:18px"></span>
+      <span style="left:60%;animation-duration:14s;animation-delay:5s"></span>
+      <span style="left:72%;animation-duration:18s;animation-delay:9s;width:12px;height:16px"></span>
+      <span style="left:84%;animation-duration:16s;animation-delay:2s"></span>
+      <span style="left:93%;animation-duration:20s;animation-delay:6s;width:14px;height:18px"></span>
+    </div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Buy it · Rent it · Wear it tonight</span>
+        <h1>The outfit you need, at your door in <em>30 minutes.</em></h1>
+        <p class="lead">Tell our AI stylist the occasion. It builds the look from clothes you can rent or buy nearby, and a courier brings it over.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#stylist">✨ Ask the stylist</a>
+          <a class="btn btn-outline" href="#shop">Browse the shop</a>
+        </div>
+        <ul class="hero-stats">
+          <li><strong>24 min</strong><span>average delivery</span></li>
+          <li><strong>120+</strong><span>local stores</span></li>
+          <li><strong>3,400</strong><span>closets to rent from</span></li>
+        </ul>
+      </div>
+
+      <div class="phone-wrap" aria-hidden="true">
+        <div class="phone">
+          <div class="screen">
+            <div class="screen-top"><b>Petal</b><span class="live"><i></i>LIVE ORDER</span></div>
+            <div class="map">
+              <svg viewBox="0 0 260 150" preserveAspectRatio="none"><path d="M28 124 C 90 120, 90 70, 130 72 S 200 40, 234 26" fill="none" stroke="#8E2A47" stroke-width="3" stroke-dasharray="2 9" stroke-linecap="round"/></svg>
+              <span class="pin store">🏬</span>
+              <span class="pin rider">🛵</span>
+              <span class="pin home">📍</span>
+            </div>
+            <div class="order-card">
+              <div class="order-row">
+                <div class="thumb">👗</div>
+                <div><strong>Silk wrap dress</strong><small>Rented from Anna's closet · 2 days</small></div>
+              </div>
+              <div class="eta">Courier arriving in 18 min</div>
+              <div class="bar"><i></i></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section stylist" id="stylist">
+    <div class="container stylist-grid">
+      <div class="reveal">
+        <span class="eyebrow">AI stylist</span>
+        <h2>Meet your stylist. <em>Say the occasion,</em> get the look.</h2>
+        <p class="lead">No more scrolling through a thousand items. Describe where you're going and Petal puts together a complete outfit from what can reach you right now.</p>
+        <ul class="benefits">
+          <li><span class="ico">📍</span><div><strong>Knows what's near you</strong><span>Only suggests pieces in stores and closets within delivery range.</span></div></li>
+          <li><span class="ico">🔀</span><div><strong>Mixes rent and buy</strong><span>Rent the statement dress, buy the shoes you'll keep.</span></div></li>
+          <li><span class="ico">💶</span><div><strong>Fits your budget</strong><span>Give it a number and the whole look stays under it.</span></div></li>
+        </ul>
+      </div>
+
+      <div class="chat reveal" id="chat">
+        <div class="chat-head">
+          <div class="avatar">✨</div>
+          <div><strong>Petal Stylist</strong><small>● Online · 214 pieces near you</small></div>
+        </div>
+        <div class="chat-body" id="chat-body" aria-live="polite"></div>
+        <div class="chips" id="chips">
+          <button class="chip" type="button" data-look="wedding">Wedding guest</button>
+          <button class="chip" type="button" data-look="interview">Job interview tomorrow</button>
+          <button class="chip" type="button" data-look="date">Date night</button>
+          <button class="chip" type="button" data-look="festival">Festival weekend</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="shop">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Near you right now</span>
+        <h2>Keep it forever, or just for the weekend</h2>
+        <div class="toggle" role="group" aria-label="Buy or rent">
+          <button type="button" data-mode="buy" aria-pressed="true">Buy</button>
+          <button type="button" data-mode="rent" aria-pressed="false">Rent</button>
+        </div>
+      </div>
+      <div class="grid-4 reveal" id="products"></div>
+    </div>
+  </section>
+
+  <section class="section" id="how" style="padding-top:0">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">How it works</span>
+        <h2>From “nothing to wear” to dressed, in three steps</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card step reveal">
+          <div class="step-num">✨</div>
+          <h3>1. Ask the stylist or browse</h3>
+          <p>Describe the occasion or pick pieces yourself from nearby stores and closets.</p>
+        </div>
+        <div class="card step reveal">
+          <div class="step-num">🛵</div>
+          <h3>2. A courier brings it over</h3>
+          <p>Track the order live. Most deliveries land in under 30 minutes.</p>
+        </div>
+        <div class="card step reveal">
+          <div class="step-num">💃</div>
+          <h3>3. Wear it</h3>
+          <p>Bought it? It's yours. Rented it? Enjoy it for a day or two.</p>
+          <small>Rentals: we pick it up again, you never leave the house.</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section closet" id="closet">
+    <div class="container split">
+      <div class="reveal">
+        <span class="eyebrow">Rent your closet</span>
+        <h2>That dress you wore once could be <em>paying rent.</em></h2>
+        <p class="lead">List pieces from your wardrobe in a minute. When someone nearby rents one, a courier collects it from you and brings it back afterwards.</p>
+        <ul class="ticks">
+          <li>You set the price per day and when it's available</li>
+          <li>Every rental is covered by a deposit hold</li>
+          <li>Returned cleaned, with handover photos both ways</li>
+        </ul>
+        <a class="btn btn-primary" href="#waitlist">List your first piece</a>
+      </div>
+      <div class="earn reveal">
+        <div class="earn-top">
+          <div class="thumb">👗</div>
+          <div><strong>Sequin midi dress</strong><br><small>Listed by you · €14 / day</small></div>
+        </div>
+        <div class="earn-amount">€84<small>▲ earned this month</small></div>
+        <div class="bars" aria-hidden="true">
+          <i style="height:30%"></i><i style="height:55%"></i><i style="height:40%"></i><i style="height:75%"></i><i style="height:60%"></i><i style="height:100%"></i>
+        </div>
+        <div class="earn-foot"><span>6 rentals</span><span>Rated 4.9 ★</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="stores">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">For stores</span>
+        <h2>Your rail, in front of everyone within 5 km</h2>
+        <p class="lead">Petal turns your shop floor into an instant-delivery storefront. You keep selling, we handle the rest.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card reveal"><div class="step-num">📈</div><h3>A new sales channel</h3><p>Reach shoppers who need something tonight and would never have walked past your door.</p></div>
+        <div class="card reveal"><div class="step-num">📦</div><h3>No logistics</h3><p>Our couriers collect from your counter. You just bag the order when it pings.</p></div>
+        <div class="card reveal"><div class="step-num">⚡</div><h3>Live in a day</h3><p>Upload your inventory, set your hours, and start receiving orders by tomorrow.</p></div>
+      </div>
+      <p class="reveal" style="text-align:center;margin-top:36px"><a class="btn btn-outline" href="#waitlist">Partner with us</a></p>
+    </div>
+  </section>
+
+  <section class="trust" aria-label="Why you can trust Petal">
+    <div class="container trust-grid">
+      <div class="trust-item"><span class="ico">🛡️</span><div><strong>Deposit protection</strong><span>Lenders are covered on every rental.</span></div></div>
+      <div class="trust-item"><span class="ico">🫧</span><div><strong>Cleaned between rentals</strong><span>Partner dry cleaners on every return.</span></div></div>
+      <div class="trust-item"><span class="ico">⏱️</span><div><strong>5-minute try-on</strong><span>Wrong size? Hand it back at the door.</span></div></div>
+    </div>
+  </section>
+
+  <section class="section cta" id="waitlist">
+    <div class="container">
+      <h2>Be first on the list.</h2>
+      <p>Petal is launching city by city. Leave your email and we'll tell you the moment couriers are on your street.</p>
+      <form class="waitlist" id="waitlist-form">
+        <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" required>
+        <button class="btn btn-light" type="submit">Join the waitlist</button>
+      </form>
+      <div class="thanks" id="thanks" role="status" hidden>🌸 You're on the list. We'll be in touch soon!</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container foot">
+    <a class="logo" href="#top">Petal</a>
+    <ul class="foot-links">
+      <li><a href="#stylist">AI stylist</a></li>
+      <li><a href="#closet">Rent your closet</a></li>
+      <li><a href="#stores">For stores</a></li>
+      <li><a href="#waitlist">Waitlist</a></li>
+    </ul>
+    <span>© 2026 Petal. Made in 30 minutes.</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ---------- Buy / Rent grid ----------
+  var catalog = {
+    buy: [
+      { e: '🧥', name: 'Linen blazer', from: 'Studio Nord', price: '€79', eta: '22 min' },
+      { e: '👗', name: 'Satin slip dress', from: 'Atelier Rosa', price: '€64', eta: '18 min' },
+      { e: '👟', name: 'White court sneakers', from: 'Kicks & Co', price: '€89', eta: '25 min' },
+      { e: '👜', name: 'Leather tote', from: 'Maison Lune', price: '€120', eta: '27 min' }
+    ],
+    rent: [
+      { e: '👗', name: 'Sequin evening gown', from: "Clara's closet", price: '€28 / day', eta: '20 min' },
+      { e: '🧥', name: 'Designer trench', from: "Tom's closet", price: '€22 / day', eta: '16 min' },
+      { e: '👠', name: 'Statement heels', from: "Ines's closet", price: '€12 / day', eta: '24 min' },
+      { e: '👜', name: 'Vintage shoulder bag', from: "Mira's closet", price: '€15 / day', eta: '19 min' }
+    ]
+  };
+  var products = document.getElementById('products');
+  var toggleBtns = document.querySelectorAll('.toggle button');
+
+  function renderProducts(mode) {
+    products.innerHTML = catalog[mode].map(function (p) {
+      return '<article class="product">' +
+        '<div class="product-img"><span class="badge">🛵 ' + p.eta + '</span>' + p.e + '</div>' +
+        '<div class="product-body"><strong>' + p.name + '</strong><small>' + p.from + '</small>' +
+        '<div class="price">' + p.price + '</div></div></article>';
+    }).join('');
+  }
+  toggleBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      toggleBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+      renderProducts(btn.dataset.mode);
+    });
+  });
+  renderProducts('buy');
+
+  // ---------- AI stylist chat (scripted) ----------
+  var looks = {
+    wedding: {
+      ask: 'Wedding on Saturday, under €60, nothing too formal',
+      reply: 'Garden-party ready and not stiff at all. All three pieces are within 2 km of you:',
+      items: [
+        { e: '👗', name: 'Silk wrap dress', from: "Anna's closet", tag: 'Rent €24', kind: 'rent' },
+        { e: '👠', name: 'Block-heel sandals', from: 'Studio Nord', tag: 'Buy €27', kind: 'buy' },
+        { e: '👜', name: 'Pearl clutch', from: "Mira's closet", tag: 'Rent €8', kind: 'rent' }
+      ],
+      total: 'Full look: €59', eta: 'Arrives in 25 min', mins: 25
+    },
+    interview: {
+      ask: 'Job interview tomorrow, smart but not boring',
+      reply: 'Sharp with a bit of personality. Rent the tailoring, keep the shirt:',
+      items: [
+        { e: '🧥', name: 'Tailored wool blazer', from: "Jonas's closet", tag: 'Rent €18', kind: 'rent' },
+        { e: '👔', name: 'Crisp poplin shirt', from: 'Atelier Rosa', tag: 'Buy €29', kind: 'buy' },
+        { e: '👞', name: 'Leather loafers', from: "Lea's closet", tag: 'Rent €12', kind: 'rent' }
+      ],
+      total: 'Full look: €59', eta: 'Arrives in 20 min', mins: 20
+    },
+    date: {
+      ask: 'Date night at 8, I want something bold',
+      reply: 'Bold it is. This combo is on its way before you finish your hair:',
+      items: [
+        { e: '👗', name: 'Satin slip dress', from: "Clara's closet", tag: 'Rent €19', kind: 'rent' },
+        { e: '🧥', name: 'Cropped leather jacket', from: "Tom's closet", tag: 'Rent €22', kind: 'rent' },
+        { e: '👢', name: 'Heeled ankle boots', from: 'Maison Lune', tag: 'Buy €45', kind: 'buy' }
+      ],
+      total: 'Full look: €86', eta: 'Arrives in 18 min', mins: 18
+    },
+    festival: {
+      ask: 'Festival weekend, 2 days, has to survive mud',
+      reply: 'Rent the things that will get muddy, buy the shorts. Priced for both days:',
+      items: [
+        { e: '🧥', name: 'Suede fringe jacket', from: "Ines's closet", tag: 'Rent €15/day', kind: 'rent' },
+        { e: '🩳', name: 'Denim cut-offs', from: 'Kicks & Co', tag: 'Buy €25', kind: 'buy' },
+        { e: '👢', name: 'Rubber festival boots', from: "Sam's closet", tag: 'Rent €10/day', kind: 'rent' }
+      ],
+      total: 'Full look: €75 for 2 days', eta: 'Arrives in 22 min', mins: 22
+    }
+  };
+
+  var chatBody = document.getElementById('chat-body');
+  var chips = document.querySelectorAll('.chip');
+  var runId = 0;
+
+  function el(tag, cls, html) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (html) n.innerHTML = html;
+    return n;
+  }
+
+  function playLook(key) {
+    var look = looks[key];
+    var id = ++runId;
+    chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c.dataset.look === key)); });
+    chatBody.innerHTML = '';
+    chatBody.appendChild(el('div', 'bubble user', look.ask));
+
+    setTimeout(function () {
+      if (id !== runId) return;
+      var typing = el('div', 'bubble bot typing', '<i></i><i></i><i></i>');
+      typing.setAttribute('aria-label', 'Stylist is typing');
+      chatBody.appendChild(typing);
+
+      setTimeout(function () {
+        if (id !== runId) return;
+        typing.remove();
+        chatBody.appendChild(el('div', 'bubble bot', look.reply));
+
+        var card = el('div', 'outfit');
+        card.innerHTML = look.items.map(function (it) {
+          return '<div class="outfit-item"><div class="thumb">' + it.e + '</div>' +
+            '<div class="info"><strong>' + it.name + '</strong><small>' + it.from + '</small></div>' +
+            '<span class="pill ' + it.kind + '">' + it.tag + '</span></div>';
+        }).join('') +
+          '<div class="outfit-total"><span>' + look.total + '</span><span>🛵 ' + look.eta + '</span></div>';
+
+        var order = el('button', 'btn btn-primary btn-block', 'Order the whole look');
+        order.type = 'button';
+        order.addEventListener('click', function () {
+          var done = el('div', 'ordered', '✓ Order placed. Courier assigned, arriving in ' + look.mins + ' min.<div class="bar"><i></i></div>');
+          order.replaceWith(done);
+        });
+        card.appendChild(order);
+        chatBody.appendChild(card);
+      }, 1300);
+    }, 500);
+  }
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () { playLook(chip.dataset.look); });
+  });
+
+  // ---------- Reveal on scroll + start chat when visible ----------
+  var reveals = document.querySelectorAll('.reveal');
+  var chat = document.getElementById('chat');
+  var chatStarted = false;
+  function startChat() { if (!chatStarted) { chatStarted = true; playLook('wedding'); } }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        if (entry.target === chat) startChat();
+        io.unobserve(entry.target);
+      });
+    }, { threshold: 0.15 });
+    reveals.forEach(function (r) { io.observe(r); });
+  } else {
+    reveals.forEach(function (r) { r.classList.add('in'); });
+    startChat();
+  }
+
+  // ---------- Waitlist ----------
+  var form = document.getElementById('waitlist-form');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    form.hidden = true;
+    document.getElementById('thanks').hidden = false;
+  });
+})();
+</script>
+</body>
+</html>
